@@ -1,0 +1,91 @@
+---
+# 所有环境公用的配置属性
+server:
+  port: 8082
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,conditions,beans,loggers,heapdump,mappings,env,dump,configprops
+info.app-name: spring-boot-demo
+info.autor: likun
+info.email: 15522632957@163.com
+spring:
+  profiles:
+    active: dev
+feign:
+  sentinel:
+    enabled: true
+---
+# 生成环境
+spring:
+  profiles: prod
+server:
+  tomcat:
+    max-connections: 1000
+
+---
+# 开发环境
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/content_center?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    hikari:
+      username: root
+      password: Li123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: content-center
+    cloud:
+      nacos:
+        discovery:
+          server-addr: localhost:8848
+  cloud:
+    nacos:
+      discovery:
+        cluster-name: BJ
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+      filter:
+        enabled: false
+  main:
+    allow-bean-definition-overriding: true
+
+
+user-center:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+#ribbon:
+#  eager-load:
+#    clients: user-center
+
+
+## java代码方式配置feign得log级别
+#logging:
+#  level:
+#    com.likun: debug
+#    com.likun.content.feignclient.UserCenterFeignClient: debug
+
+
+##属性方式配置feign得log级别
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

@@ -1,0 +1,31 @@
+---
+# 所有环境公用的配置属性
+server:
+  port: 8080
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,conditions,beans,loggers,heapdump,mappings,env,dump,configprops
+
+info.app-name: spring-boot-demo
+info.autor: likun
+info.email: 15522632957@163.com
+spring:
+  profiles:
+    active: dev
+---
+# 生成环境
+spring:
+  profiles: prod
+server:
+  tomcat:
+    max-connections: 1000
+
+---
+# 开发环境
+spring:
+  profiles: dev

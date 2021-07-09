@@ -1,0 +1,50 @@
+---
+# 所有环境公用的配置属性
+server:
+  port: 8889
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,conditions,beans,loggers,heapdump,mappings,env,dump,configprops
+
+info.app-name: spring-boot-demo
+info.autor: likun
+info.email: 15522632957@163.com
+spring:
+  profiles:
+    active: dev
+---
+# 生成环境
+spring:
+  profiles: prod
+server:
+  tomcat:
+    max-connections: 1000
+
+---
+# 开发环境
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_center?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false
+    hikari:
+      username: root
+      password: Li123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        ## 注册中心地址
+        server-addr: localhost:8848
+        ## 所属命名空间
+        # namespace: 996ec146-3296-4fdd-ad8b-14199bf28a2e
+        ## 所属集群
+        # cluster-name: nanjing
+        metadata:
+          miaosu: usercenter
+  application:
+    name: user-center
